@@ -10,6 +10,7 @@ public class SumoAI : MonoBehaviour {
 
 
 	// Use this for initialization
+
 	public Vector3 Where (){
 		float distanceToCenter = Vector3.Distance (transform.position, (ring.transform.position+ offset));
 		//Debug.Log (distanceToCenter);
@@ -25,6 +26,18 @@ public class SumoAI : MonoBehaviour {
 			}
 		}
 		return directionToPlayer.normalized;
+	}
+	public Vector3 ClosestPlayer (){
+		float distanceFromUs = 0f;
+		Vector3 directionToNearestPlayer = new Vector3 ();
+		foreach (ControllerPlayer player in winner.playersInTheRing) {
+			float distanceFromPlayer = Vector3.Distance (transform.position, (player.transform.position));
+			if (distanceFromPlayer > distanceFromUs) {
+				directionToNearestPlayer =(player.transform.position - transform.position).normalized;
+			}
+
+		}
+		return directionToNearestPlayer;
 	}
 	void Start () {
 		

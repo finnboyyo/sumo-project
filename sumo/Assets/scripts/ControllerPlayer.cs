@@ -6,7 +6,9 @@ using System.Security.Cryptography;
 
 [RequireComponent(typeof(Rigidbody)) ]
 public class ControllerPlayer : MonoBehaviour {
-	
+	public string name;
+	int fullHealth = 10;
+	public int currentHealth;
 	[SerializeField] bool isPlayer = false;
 	Rigidbody phat;
     public float speed;
@@ -23,6 +25,9 @@ public class ControllerPlayer : MonoBehaviour {
 		hitbox = GetComponentInChildren<Hitbox> ();
         phat = GetComponent<Rigidbody>();
 		sumoAI = GetComponent<SumoAI> ();
+	// tell winner script that were inthe ring
+		winner.playersInTheRing.Add (this);
+		currentHealth = fullHealth;
 	}
 	
 	// Update is called once per frame
@@ -36,8 +41,11 @@ public class ControllerPlayer : MonoBehaviour {
 			sumoAIMovevment ();
 		}
 	}
-
-    void Movevment()
+	public void OutOfBounds () {
+		winner.playersInTheRing.Remove (this);
+		this.enabled = false;
+	}
+     void Movevment()
     {
         phat.velocity = Input.GetAxis("Horizontal") * speed * Vector3.right;
 		GetDirection ();
@@ -47,16 +55,18 @@ public class ControllerPlayer : MonoBehaviour {
 	} 
 	void sumoAIMovevment()
 	{
-		phat.velocity = sumoAI.Where () * speed;
-		GetDirection ();
+		phat.velocity = sumoAI.ClosestPlayer () * speed;
+
 
 	
 
 	} 
 	public void GotHit (Vector3 direction,float pushStrength = 2000f)
 	{Debug.Log ("ive been hit "+pushStrength);
-		phat.AddForce((direction * -pushStrength));
-	
+		phat.AddForce((direction * -pushStrength * (fullHealth/currentHealth)));
+		if (currentHealth > 1) {
+			currentHealth--;
+		}
 	}
 	void GetDirection (){ 
 		if (Input.GetAxis ("Horizontal") > buffer) {

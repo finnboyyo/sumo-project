@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class Timer : MonoBehaviour {
-
+	[SerializeField] float matchLength = 60f;
     float clock;
     float startTime;
     public Text grandfatherClock;
     public bool isTimerRunning = true;
     bool isPaused = false;
+
     // Use this for initialization
     void Stop() {
 
@@ -34,11 +35,12 @@ public class Timer : MonoBehaviour {
         }
     }
 
-
+	void RoundOver () {winner.MatchOver ();
+	}
 
 	void Start () {
 
-
+		clock = matchLength;
         startTime = Time.time;
 
         StartCoroutine("DisplayClock"); 
@@ -53,13 +55,16 @@ public class Timer : MonoBehaviour {
     IEnumerator DisplayClock()
     {
         while (isTimerRunning) {
-            clock = Time.time - startTime;
+			clock = matchLength - (Time.time - startTime);
 
             grandfatherClock.text = clock.ToString("0.0");
 
             yield return null;
           
-
+			if (clock < 0f) {
+				isTimerRunning = false;
+				RoundOver ();
+			}
         }
     }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Boundery : MonoBehaviour {
-
+	[SerializeField]Timer timer;
 	// Use this for initialization
 	void Start () {
 		
@@ -18,10 +18,13 @@ public class Boundery : MonoBehaviour {
 		if (other.CompareTag("Player") ) 
 		{
 
-			other.gameObject.GetComponent<ControllerPlayer> ().enabled = false;
+			other.gameObject.GetComponent<ControllerPlayer> ().OutOfBounds ();
 			if (other.gameObject.GetComponent<SumoAI>() != null) {
 				other.gameObject.GetComponent<SumoAI> ().enabled = false;
 
+			}
+			if (winner.CheckPlayerCount ()) {
+				timer.isTimerRunning = false;
 			}
 		}
 		SceneMan.playersActive--;
