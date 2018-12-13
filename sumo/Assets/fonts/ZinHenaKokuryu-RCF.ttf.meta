@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 88afa87fa4813ec4b8089e5840c82b8e
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: ZinHenaKokuryu
+  fontNames:
+  - ZinHenaKokuryu
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 4930c8e4caee61b40bcb1afaaca8396f, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

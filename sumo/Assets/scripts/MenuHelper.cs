@@ -12,6 +12,11 @@ public class MenuHelper : MonoBehaviour {
 		SceneMan.TarterSause ();
 
 	}
+	public void QuitGame(){
+	
+		Debug.Log ("Quit");
+		Application.Quit();
+	}
 
 
 

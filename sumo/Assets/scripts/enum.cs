@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
 
 public enum CharacterDirection {
-	up,down,left,right
+	up = 2,down = 3,left = 0,right = 1
 }
