@@ -39,16 +39,21 @@ public class ControllerPlayer : MonoBehaviour {
 		if (isPlayer == true) {
 			Movevment ();
 			if (Input.GetButtonDown ("Fire1")) {
-				hitbox.ActivateHitbox ();
-				// Cant spam rolls after a push. Bugs?
-				canRoll = false;
-				StartCoroutine (coolDownForRoll ());
+				attack ();
 
 			}
+
 		} else {
 			sumoAIMovevment ();
 		}
 	}
+	public void attack () {
+		hitbox.ActivateHitbox ();
+		// Cant spam rolls after a push. Bugs?
+		canRoll = false;
+		StartCoroutine (coolDownForRoll ());
+	}
+
 	public void OutOfBounds () {
 		winner.playersInTheRing.Remove (this);
 		this.enabled = false;
@@ -60,13 +65,14 @@ public class ControllerPlayer : MonoBehaviour {
 	
 			phat.velocity += Input.GetAxis("Vertical") * speed * Vector3.forward;
 		animator.SetFloat ("movement", phat.velocity.magnitude);
-		Debug.Log (phat.velocity);
-		Debug.Log (phat.velocity.magnitude);
+		//Debug.Log (phat.velocity);
+		//Debug.Log (phat.velocity.magnitude);
 
 	} 
 	void sumoAIMovevment()
 	{
-		phat.velocity = sumoAI.ClosestPlayer () * speed;
+		phat.velocity = sumoAI.ClosestPlayer ().normalized * speed;
+		GetAIDirection ();
 	} 
 
 	void RollStart (){
@@ -106,6 +112,41 @@ public class ControllerPlayer : MonoBehaviour {
 			theDirection = CharacterDirection.up;
 			hitboxPivot.localEulerAngles = rotations [0];
 			animator.SetFloat ("direction", (float)theDirection);
+		}
+
+	} 
+
+
+	void GetAIDirection (){ 
+
+		if ((Mathf.Abs(sumoAI.ClosestPlayer ().normalized.x) > (Mathf.Abs (sumoAI.ClosestPlayer ().normalized.y)))) {
+			if (Mathf.Abs(sumoAI.ClosestPlayer ().normalized.x) > (sumoAI.ClosestPlayer ().normalized.x)) {
+				theDirection = CharacterDirection.right;
+				hitboxPivot.localEulerAngles = rotations [2];
+				transform.localScale = new Vector3 (1, 1, 1);
+				animator.SetFloat ("direction", (float)theDirection);
+
+			} 
+		
+			else  {
+				theDirection = CharacterDirection.left;
+				hitboxPivot.localEulerAngles = rotations [2];
+				transform.localScale = new Vector3 (-1, 1, 1);
+				animator.SetFloat ("direction", (float)theDirection);
+				}
+		} else {
+			if (Mathf.Abs(sumoAI.ClosestPlayer ().normalized.y) > (sumoAI.ClosestPlayer ().normalized.y)) {
+
+				theDirection = CharacterDirection.down;
+				hitboxPivot.localEulerAngles = rotations [1];
+				animator.SetFloat ("direction", (float)theDirection);
+			}  
+			else  {
+
+				theDirection = CharacterDirection.up;
+				hitboxPivot.localEulerAngles = rotations [0];
+				animator.SetFloat ("direction", (float)theDirection);
+			}
 		}
 
 	} 

@@ -7,44 +7,69 @@ public class SumoAI : MonoBehaviour {
 	[SerializeField] GameObject opponent;
 	[SerializeField] GameObject ring;
 	Vector3 offset = new Vector3 (0, .5f, 0);
-
-
+	ControllerPlayer controllerPlayer;
+	float closeEnoughToHit = 1f;
+	float attackDelay = 0.2f;
+	bool readyToAttack = true;
+	float ringRadius;
 	// Use this for initialization
 
 	public Vector3 Where (){
 		float distanceToCenter = Vector3.Distance (transform.position, (ring.transform.position+ offset));
 		//Debug.Log (distanceToCenter);
-		float playersDistanceToCenter = Vector3.Distance (transform.position, (ring.transform.position + offset));
+		float opponentsDistanceToCenter = Vector3.Distance (opponent.transform.position, (ring.transform.position + offset));
 		//Debug.Log (playersDistanceToCenter);
-		Vector3 directionToPlayer = new Vector3 (0, 0, 0); 
-		if (distanceToCenter > (ring.GetComponent<Collider> ().bounds.max.x / 2)) {
+		Vector3 directionToOpponent = new Vector3 (0, 0, 0); 
+		if (distanceToCenter > ringRadius) {
 
-			if (playersDistanceToCenter > distanceToCenter) {
-				directionToPlayer = opponent.transform.position - transform.position;
+			if (opponentsDistanceToCenter > distanceToCenter) {
+				directionToOpponent = opponent.transform.position - transform.position;
 			} else {
-				directionToPlayer = (ring.transform.position + offset) - transform.position;
+				directionToOpponent = (ring.transform.position + offset) - transform.position;
 			}
 		}
-		return directionToPlayer.normalized;
+		return directionToOpponent.normalized;
 	}
 	public Vector3 ClosestPlayer (){
-		float distanceFromUs = 0f;
+		float distanceFromUs = ringRadius * 2;
 		Vector3 directionToNearestPlayer = new Vector3 ();
-		foreach (ControllerPlayer player in winner.playersInTheRing) {
-			float distanceFromPlayer = Vector3.Distance (transform.position, (player.transform.position));
-			if (distanceFromPlayer > distanceFromUs) {
-				directionToNearestPlayer =(player.transform.position - transform.position).normalized;
+		foreach (ControllerPlayer opp in winner.playersInTheRing) {
+			float distanceFromPlayer = Vector3.Distance (transform.position, (opp.transform.position));
+			if (distanceFromPlayer < distanceFromUs) {
+				distanceFromUs = distanceFromPlayer;
+				if ((opp.transform.position - transform.position) != Vector3.zero) {
+					directionToNearestPlayer = (opp.transform.position - transform.position);
+					opponent = opp.gameObject;
+				}
 			}
 
 		}
 		return directionToNearestPlayer;
 	}
 	void Start () {
-		
+		controllerPlayer = GetComponent <ControllerPlayer> ();
+		ringRadius = ring.GetComponent<Collider> ().bounds.max.x / 2;
+		ClosestPlayer ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		Where ();
+		ShouldWeAttack ();
+		ClosestPlayer ();
+	}
+	void ShouldWeAttack () {
+		if (readyToAttack == true){
+			if (Where ().magnitude >= closeEnoughToHit) {
+				controllerPlayer.attack ();
+				readyToAttack = false;
+				StartCoroutine (attackCooldown ());
+			}
+		}
+	}
+	IEnumerator attackCooldown () {
+		Debug.Log ("did it");
+		yield return new WaitForSeconds (attackDelay + Random.Range (0f,0.2f));
+		readyToAttack = true;
+		Debug.Log ("ready");
 	}
 }
