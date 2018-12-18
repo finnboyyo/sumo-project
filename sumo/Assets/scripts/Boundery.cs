@@ -29,7 +29,7 @@ public class Boundery : MonoBehaviour {
 		}
 		SceneMan.playersActive--;
 
-		Debug.Log(SceneMan.playersActive);
+
 
 		if (SceneMan.playersActive == 1) { SceneMan.Ranch ();
 		};

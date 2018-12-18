@@ -12,24 +12,61 @@ public class SumoAI : MonoBehaviour {
 	float attackDelay = 0.2f;
 	bool readyToAttack = true;
 	float ringRadius;
+	public bool underThreat = false;
+	bool movingOutOfTheWay =false;
+	public Transform [] escapeDirections;
 	// Use this for initialization
+	Vector3 fleeDirection;
 
 	public Vector3 Where (){
-		float distanceToCenter = Vector3.Distance (transform.position, (ring.transform.position+ offset));
-		//Debug.Log (distanceToCenter);
-		float opponentsDistanceToCenter = Vector3.Distance (opponent.transform.position, (ring.transform.position + offset));
-		//Debug.Log (playersDistanceToCenter);
-		Vector3 directionToOpponent = new Vector3 (0, 0, 0); 
-		if (distanceToCenter > ringRadius) {
+		if (movingOutOfTheWay == false) {
+			float distanceToCenter = Vector3.Distance (transform.position, (ring.transform.position + offset));
+			//Debug.Log (distanceToCenter);
+			float opponentsDistanceToCenter = Vector3.Distance (opponent.transform.position, (ring.transform.position + offset));
+			//Debug.Log (playersDistanceToCenter);
+			Vector3 directionToOpponent = new Vector3 (0, 0, 0); 
+			if (distanceToCenter > ringRadius) {
 
-			if (opponentsDistanceToCenter > distanceToCenter) {
-				directionToOpponent = opponent.transform.position - transform.position;
-			} else {
-				directionToOpponent = (ring.transform.position + offset) - transform.position;
+				if (opponentsDistanceToCenter > distanceToCenter) {
+					directionToOpponent = opponent.transform.position - transform.position;
+				} else {
+					directionToOpponent = (ring.transform.position + offset) - transform.position;
+
+					if (underThreat == true) {
+						StartCoroutine (whereImRunning ());
+						movingOutOfTheWay = true;
+
+				
+					}
+
+				}
 			}
+			return directionToOpponent.normalized;
+		} else {
+			return fleeDirection.normalized;
 		}
-		return directionToOpponent.normalized;
 	}
+	Vector3 pathToFlee (){
+		Vector3[] theWayToGo = new Vector3[4];
+		float[] theirDistance = new float [4];
+		for (int i = 0; i >= 4; i++) {
+			theirDistance [i] =  Vector3.Distance (transform.position, escapeDirections[i].position);
+		}
+		float maxThreshold = ringRadius*2;
+		for (int i = 0; i >= 4; i++) {
+			if (theirDistance [i] < maxThreshold) {
+				theWayToGo [3 - i] = escapeDirections [i].position; 
+				maxThreshold = theirDistance [i];
+			} else {
+				for (int j = 1; j >= 4; j++) {
+					theWayToGo [j - 1] = theWayToGo [j];
+				}
+				theWayToGo [3] = escapeDirections [i].position;
+			}
+
+		}return theWayToGo [3];
+	}
+
 	public Vector3 ClosestPlayer (){
 		float distanceFromUs = ringRadius * 2;
 		Vector3 directionToNearestPlayer = new Vector3 ();
@@ -67,9 +104,19 @@ public class SumoAI : MonoBehaviour {
 		}
 	}
 	IEnumerator attackCooldown () {
-		Debug.Log ("did it");
 		yield return new WaitForSeconds (attackDelay + Random.Range (0f,0.2f));
 		readyToAttack = true;
-		Debug.Log ("ready");
+	}
+	IEnumerator whereImRunning () {
+		float startTime = Time.time;
+		fleeDirection = pathToFlee ();
+		Debug.Log (fleeDirection);
+		while ((Time.time - startTime)<= 1f) {
+
+			Debug.Log ("stuff");
+			yield return null;
+
+		}
+		movingOutOfTheWay = false;
 	}
 }

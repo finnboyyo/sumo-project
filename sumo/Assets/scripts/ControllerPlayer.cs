@@ -15,7 +15,7 @@ public class ControllerPlayer : MonoBehaviour {
 	[SerializeField] bool canRoll = true;
 	public float speed = 1;
 
-	CharacterDirection theDirection;
+	CharacterDirection theDirection = CharacterDirection.up;
 	Vector3[] rotations = {
 		new Vector3 (0, 0, 0), new Vector3 (0, 180, 0), new Vector3 (0, 90, 0), new Vector3 (0, -90, 0)
 	};
@@ -63,7 +63,7 @@ public class ControllerPlayer : MonoBehaviour {
         phat.velocity = Input.GetAxis("Horizontal") * speed * Vector3.right;
 		GetDirection ();
 	
-			phat.velocity += Input.GetAxis("Vertical") * speed * Vector3.forward;
+		phat.velocity += Input.GetAxis("Vertical") * speed * Vector3.forward;
 		animator.SetFloat ("movement", phat.velocity.magnitude);
 		//Debug.Log (phat.velocity);
 		//Debug.Log (phat.velocity.magnitude);
@@ -91,17 +91,16 @@ public class ControllerPlayer : MonoBehaviour {
 		if (Input.GetAxis ("Horizontal") > buffer) {
 			theDirection = CharacterDirection.right;
 			hitboxPivot.localEulerAngles = rotations [2];
-			transform.localScale = new Vector3 (1, 1, 1);
 			animator.SetFloat ("direction", (float)theDirection);
 
 			} 
 		if (Input.GetAxis ("Horizontal") < -buffer) {
 			
 			theDirection = CharacterDirection.left;
-			hitboxPivot.localEulerAngles = rotations [2];
-			transform.localScale = new Vector3 (-1, 1, 1);
+			hitboxPivot.localEulerAngles = rotations [3];
 			animator.SetFloat ("direction", (float)theDirection);
-		} if (Input.GetAxis ("Vertical") < -buffer) {
+		} 
+		if (Input.GetAxis ("Vertical") < -buffer) {
 			
 			theDirection = CharacterDirection.down;
 			hitboxPivot.localEulerAngles = rotations [1];
@@ -130,8 +129,8 @@ public class ControllerPlayer : MonoBehaviour {
 		
 			else  {
 				theDirection = CharacterDirection.left;
-				hitboxPivot.localEulerAngles = rotations [2];
-				transform.localScale = new Vector3 (-1, 1, 1);
+				hitboxPivot.localEulerAngles = rotations [3];
+				//transform.localScale = new Vector3 (-1, 1, 1);
 				animator.SetFloat ("direction", (float)theDirection);
 				}
 		} else {

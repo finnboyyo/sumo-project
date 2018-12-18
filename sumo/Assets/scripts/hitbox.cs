@@ -23,11 +23,9 @@ public class Hitbox : MonoBehaviour {
 	}
 
 	void Reaction (Collider other) {
-		Debug.Log (other.gameObject.name);
 		other.gameObject.GetComponent<ControllerPlayer> ().GotHit (transform.forward);
 	}
 	void OnEnable (){
-		Debug.Log ("yo");
 		beenHit = false;
 	}
 	public void ActivateHitbox () {

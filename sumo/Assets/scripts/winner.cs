@@ -32,6 +32,7 @@ public static class winner {
 		Debug.Log (winners.Count);
 		if (winners.Count == 1) {
 			Debug.Log (winners[0].name);
+		
 		} else {Debug.Log ("it's a draw");
 		}
 	}
