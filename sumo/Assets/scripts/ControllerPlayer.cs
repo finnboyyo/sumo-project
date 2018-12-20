@@ -118,8 +118,8 @@ public class ControllerPlayer : MonoBehaviour {
 
 	void GetAIDirection (){ 
 
-		if ((Mathf.Abs(sumoAI.Where ().normalized.x) > (Mathf.Abs (sumoAI.Where ().normalized.y)))) {
-			if (Mathf.Abs(sumoAI.Where ().normalized.x) > (sumoAI.Where ().normalized.x)) {
+		if ((Mathf.Abs(sumoAI.DirectionToClosestPlayer ().normalized.x) > (Mathf.Abs (sumoAI.DirectionToClosestPlayer().normalized.z)))) {
+			if (Mathf.Abs(sumoAI.DirectionToClosestPlayer ().normalized.x) > (sumoAI.DirectionToClosestPlayer ().normalized.x)) {
 				theDirection = CharacterDirection.right;
 				hitboxPivot.localEulerAngles = rotations [2];
 				transform.localScale = new Vector3 (1, 1, 1);
@@ -134,16 +134,16 @@ public class ControllerPlayer : MonoBehaviour {
 				animator.SetFloat ("direction", (float)theDirection);
 				}
 		} else {
-			if (Mathf.Abs(sumoAI.Where ().normalized.y) > (sumoAI.Where ().normalized.y)) {
+			if (Mathf.Abs(sumoAI.DirectionToClosestPlayer ().normalized.z) > (sumoAI.DirectionToClosestPlayer ().normalized.z)) {
 
 				theDirection = CharacterDirection.down;
-				hitboxPivot.localEulerAngles = rotations [1];
+				hitboxPivot.localEulerAngles = rotations [0];
 				animator.SetFloat ("direction", (float)theDirection);
 			}  
 			else  {
 
 				theDirection = CharacterDirection.up;
-				hitboxPivot.localEulerAngles = rotations [0];
+				hitboxPivot.localEulerAngles = rotations [1];
 				animator.SetFloat ("direction", (float)theDirection);
 			}
 		}

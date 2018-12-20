@@ -72,7 +72,9 @@ public class SumoAI : MonoBehaviour {
 			return new Vector3(0,.5f,0);
 		}		
 	}
-
+	public Vector3 DirectionToClosestPlayer (){
+		return (opponent.transform.position - transform.position);
+	}
 	public void ClosestPlayer (){
 		float distanceFromUs = ringRadius * 2;
 		//Vector3 directionToNearestPlayer = new Vector3 ();
