@@ -71,7 +71,7 @@ public class ControllerPlayer : MonoBehaviour {
 	} 
 	void sumoAIMovevment()
 	{
-		phat.velocity = sumoAI.ClosestPlayer ().normalized * speed;
+		phat.velocity = sumoAI.Where ().normalized * speed;
 		GetAIDirection ();
 	} 
 
@@ -81,7 +81,7 @@ public class ControllerPlayer : MonoBehaviour {
 	}
 
 	public void GotHit (Vector3 direction,float pushStrength = 2000f)
-	{Debug.Log ("ive been hit "+pushStrength);
+	{
 		phat.AddForce((direction * -pushStrength * (fullHealth/currentHealth)));
 		if (currentHealth > 1) {
 			currentHealth--;
@@ -118,8 +118,8 @@ public class ControllerPlayer : MonoBehaviour {
 
 	void GetAIDirection (){ 
 
-		if ((Mathf.Abs(sumoAI.ClosestPlayer ().normalized.x) > (Mathf.Abs (sumoAI.ClosestPlayer ().normalized.y)))) {
-			if (Mathf.Abs(sumoAI.ClosestPlayer ().normalized.x) > (sumoAI.ClosestPlayer ().normalized.x)) {
+		if ((Mathf.Abs(sumoAI.Where ().normalized.x) > (Mathf.Abs (sumoAI.Where ().normalized.y)))) {
+			if (Mathf.Abs(sumoAI.Where ().normalized.x) > (sumoAI.Where ().normalized.x)) {
 				theDirection = CharacterDirection.right;
 				hitboxPivot.localEulerAngles = rotations [2];
 				transform.localScale = new Vector3 (1, 1, 1);
@@ -134,7 +134,7 @@ public class ControllerPlayer : MonoBehaviour {
 				animator.SetFloat ("direction", (float)theDirection);
 				}
 		} else {
-			if (Mathf.Abs(sumoAI.ClosestPlayer ().normalized.y) > (sumoAI.ClosestPlayer ().normalized.y)) {
+			if (Mathf.Abs(sumoAI.Where ().normalized.y) > (sumoAI.Where ().normalized.y)) {
 
 				theDirection = CharacterDirection.down;
 				hitboxPivot.localEulerAngles = rotations [1];

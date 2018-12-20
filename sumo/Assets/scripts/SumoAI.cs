@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Security.Cryptography;
+using UnityEngine.UI;
+
 
 public class SumoAI : MonoBehaviour {
+	[HeaderAttribute("Testing Only")]
+	[SerializeField]Image indicator;
 	[SerializeField] GameObject opponent;
 	[SerializeField] GameObject ring;
 	Vector3 offset = new Vector3 (0, .5f, 0);
@@ -13,79 +17,85 @@ public class SumoAI : MonoBehaviour {
 	bool readyToAttack = true;
 	float ringRadius;
 	public bool underThreat = false;
-	bool movingOutOfTheWay =false;
-	public Transform [] escapeDirections;
+	[SerializeField]bool movingOutOfTheWay =false;
+	Vector3[] escapeDirections = new Vector3[4];
 	// Use this for initialization
 	Vector3 fleeDirection;
+	[SerializeField] float fleeDuration = 2f;
 
 	public Vector3 Where (){
-		if (movingOutOfTheWay == false) {
-			float distanceToCenter = Vector3.Distance (transform.position, (ring.transform.position + offset));
-			//Debug.Log (distanceToCenter);
-			float opponentsDistanceToCenter = Vector3.Distance (opponent.transform.position, (ring.transform.position + offset));
-			//Debug.Log (playersDistanceToCenter);
-			Vector3 directionToOpponent = new Vector3 (0, 0, 0); 
-			if (distanceToCenter > ringRadius) {
+		float distanceToCenter = Vector3.Distance (transform.position, (ring.transform.position + offset));
+		//Debug.Log (distanceToCenter);
+		float opponentsDistanceToCenter = Vector3.Distance (opponent.transform.position, (ring.transform.position + offset));
+		//Debug.Log (playersDistanceToCenter);
+		Vector3 directionToGo = new Vector3 (0, 0, 0); 
+		if (movingOutOfTheWay) {
+			 
+			Debug.Log ("should be red");
+			indicator.color = Color.red;
+			return fleeDirection;
 
-				if (opponentsDistanceToCenter > distanceToCenter) {
-					directionToOpponent = opponent.transform.position - transform.position;
-				} else {
-					directionToOpponent = (ring.transform.position + offset) - transform.position;
-
-					if (underThreat == true) {
-						StartCoroutine (whereImRunning ());
-						movingOutOfTheWay = true;
-
-				
-					}
-
-				}
-			}
-			return directionToOpponent.normalized;
 		} else {
-			return fleeDirection.normalized;
+			if (opponentsDistanceToCenter > distanceToCenter) {
+				//try and push the opponent out
+				ClosestPlayer ();
+				Debug.Log ("try and push the opponent out");
+				directionToGo = opponent.transform.position - transform.position;
+				indicator.color = Color.cyan;
+			} else {
+				//try to go to the center
+				Debug.Log ("try to go to the center");
+				directionToGo = (ring.transform.position + offset) - transform.position;
+				indicator.color = Color.yellow;
+				if (underThreat == true) {
+					//try and get out of the threat zone
+					Debug.Log ("try and get out of the threat zone");
+					fleeDirection = pathToFlee ();
+					StartCoroutine (WhereImRunning ());
+					movingOutOfTheWay = true;
+					indicator.color = Color.black;
+					return fleeDirection;
+				}
+
+			}
+
+
+			return directionToGo.normalized;
 		}
 	}
 	Vector3 pathToFlee (){
-		Vector3[] theWayToGo = new Vector3[4];
-		float[] theirDistance = new float [4];
-		for (int i = 0; i >= 4; i++) {
-			theirDistance [i] =  Vector3.Distance (transform.position, escapeDirections[i].position);
-		}
-		float maxThreshold = ringRadius*2;
-		for (int i = 0; i >= 4; i++) {
-			if (theirDistance [i] < maxThreshold) {
-				theWayToGo [3 - i] = escapeDirections [i].position; 
-				maxThreshold = theirDistance [i];
-			} else {
-				for (int j = 1; j >= 4; j++) {
-					theWayToGo [j - 1] = theWayToGo [j];
-				}
-				theWayToGo [3] = escapeDirections [i].position;
-			}
-
-		}return theWayToGo [3];
+		int i = Random.Range (0, 3);
+		if (Vector3.Distance (transform.position, escapeDirections[i]) > ringRadius) {
+				//if (Vector3.Distance (transform.position, point) < ((ringRadius / 2) * 3)) {
+			return escapeDirections[i];
+		} else {		
+			return new Vector3(0,.5f,0);
+		}		
 	}
 
-	public Vector3 ClosestPlayer (){
+	public void ClosestPlayer (){
 		float distanceFromUs = ringRadius * 2;
-		Vector3 directionToNearestPlayer = new Vector3 ();
+		//Vector3 directionToNearestPlayer = new Vector3 ();
 		foreach (ControllerPlayer opp in winner.playersInTheRing) {
 			float distanceFromPlayer = Vector3.Distance (transform.position, (opp.transform.position));
 			if (distanceFromPlayer < distanceFromUs) {
 				distanceFromUs = distanceFromPlayer;
 				if ((opp.transform.position - transform.position) != Vector3.zero) {
-					directionToNearestPlayer = (opp.transform.position - transform.position);
+					//directionToNearestPlayer = (opp.transform.position - transform.position);
 					opponent = opp.gameObject;
 				}
 			}
 
 		}
-		return directionToNearestPlayer;
+		//return directionToNearestPlayer;
 	}
 	void Start () {
 		controllerPlayer = GetComponent <ControllerPlayer> ();
 		ringRadius = ring.GetComponent<Collider> ().bounds.max.x / 2;
+		escapeDirections [0] = new Vector3( ringRadius*2, .5f, 0 );
+		escapeDirections [1] = new Vector3( -ringRadius*2, .5f, 0 );
+		escapeDirections [2] = new Vector3( 0, .5f, ringRadius*2 );
+		escapeDirections [3] = new Vector3(0,.5f, -ringRadius*2 );
 		ClosestPlayer ();
 	}
 	
@@ -99,24 +109,20 @@ public class SumoAI : MonoBehaviour {
 			if (Where ().magnitude >= closeEnoughToHit) {
 				controllerPlayer.attack ();
 				readyToAttack = false;
-				StartCoroutine (attackCooldown ());
+				StartCoroutine (AttackCooldown ());
 			}
 		}
 	}
-	IEnumerator attackCooldown () {
+	IEnumerator AttackCooldown () {
 		yield return new WaitForSeconds (attackDelay + Random.Range (0f,0.2f));
 		readyToAttack = true;
 	}
-	IEnumerator whereImRunning () {
-		float startTime = Time.time;
-		fleeDirection = pathToFlee ();
+	IEnumerator WhereImRunning () {
+		
+
 		Debug.Log (fleeDirection);
-		while ((Time.time - startTime)<= 1f) {
-
-			Debug.Log ("stuff");
-			yield return null;
-
-		}
+		yield return new WaitForSeconds (fleeDuration);
 		movingOutOfTheWay = false;
+		Debug.Log ("done fleeing");
 	}
 }
