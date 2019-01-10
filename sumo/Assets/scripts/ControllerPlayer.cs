@@ -25,13 +25,19 @@ public class ControllerPlayer : MonoBehaviour {
 	SumoAI sumoAI;
 	// Use this for initialization
 	void Start () {
+
+	}
+
+	void OnEnable (){
+		
 		animator = GetComponent<Animator> ();
 		hitbox = GetComponentInChildren<Hitbox> ();
-        phat = GetComponent<Rigidbody>();
+		phat = GetComponent<Rigidbody>();
 		sumoAI = GetComponent<SumoAI> ();
-	// tell winner script that were inthe ring
+		// tell winner script that were inthe ring
 		winner.playersInTheRing.Add (this);
 		currentHealth = fullHealth;
+	
 	}
 	
 	// Update is called once per frame
@@ -89,7 +95,6 @@ public class ControllerPlayer : MonoBehaviour {
 	}
 	void GetDirection (){ 
 		if (Input.GetAxis ("Horizontal") > buffer) {
-			theDirection = CharacterDirection.right;
 			hitboxPivot.localEulerAngles = rotations [2];
 			animator.SetFloat ("direction", (float)theDirection);
 

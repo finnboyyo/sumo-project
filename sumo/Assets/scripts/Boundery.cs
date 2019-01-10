@@ -1,12 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
+using UnityEngine.SceneManagement;
 public class Boundery : MonoBehaviour {
+	public TextMeshProUGUI containText;
+
 	[SerializeField]Timer timer;
 	// Use this for initialization
+
+
+
 	void Start () {
-		
+
+		winner.resetText ();
+
+		containText.text = winner.winName;	
 	}
 	
 	// Update is called once per frame
@@ -25,15 +34,32 @@ public class Boundery : MonoBehaviour {
 			}
 			if (winner.CheckPlayerCount ()) {
 				timer.isTimerRunning = false;
+				containText.text = winner.winName;
+			
+			
 			}
+
 		}
 		SceneMan.playersActive--;
 
 
 
-		if (SceneMan.playersActive == 1) { SceneMan.Ranch ();
+		if (SceneMan.playersActive == -1) { SceneMan.Ranch ();
+
+			StartCoroutine (timeBuffer());
 		};
     }
 
+
+	IEnumerator timeBuffer ()
+	{
+
+		yield return new WaitForSecondsRealtime (5f); 
+
+		winner.playersInTheRing.Clear ();
+
+		SceneManager.LoadSceneAsync (0);
+	
+	}
 
 }

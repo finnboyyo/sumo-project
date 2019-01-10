@@ -9,8 +9,8 @@ public static class SceneMan {
 	//Tarter Suace means Start game 
 	public static void TarterSause()
 	{
-		SceneManager.LoadSceneAsync (1);
-		playersActive = 4; 
+		playersActive = 4;
+		SceneManager.LoadScene (1);
 		Debug.Log (playersActive);
 	} 
 	// Ranch means restart
@@ -18,9 +18,10 @@ public static class SceneMan {
 	public static void Ranch()
 	{
 
-		playersActive = 4; 
+	playersActive = 4; 
 		Debug.Log (playersActive);
-		SceneManager.LoadSceneAsync (0);
+
+	//SceneManager.LoadSceneAsync (0);
 
 	
 
@@ -28,6 +29,7 @@ public static class SceneMan {
 
 
 	public static void PlayerOut ()
+
 	{
 	
 		playersActive--;
@@ -40,5 +42,5 @@ public static class SceneMan {
 			//Well thats a shame
 		}
 	}
-
+		
 }

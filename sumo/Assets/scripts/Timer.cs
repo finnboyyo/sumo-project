@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+
 public class Timer : MonoBehaviour {
 	[SerializeField] float matchLength = 60f;
     float clock;
@@ -9,7 +11,7 @@ public class Timer : MonoBehaviour {
     public Text grandfatherClock;
     public bool isTimerRunning = true;
     bool isPaused = false;
-
+	public TextMeshProUGUI textWin;
     // Use this for initialization
     void Stop() {
 
@@ -44,7 +46,7 @@ public class Timer : MonoBehaviour {
         startTime = Time.time;
 
         StartCoroutine("DisplayClock"); 
-
+		winner.resetText ();
 	}
 	
 	// Update is called once per frame
