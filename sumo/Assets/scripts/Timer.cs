@@ -37,7 +37,8 @@ public class Timer : MonoBehaviour {
 
 	void RoundOver () {winner.MatchOver ();
 	}
-
+	void InitializePlayers (){
+	}
 	void Start () {
 
 		clock = matchLength;
