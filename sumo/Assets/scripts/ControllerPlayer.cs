@@ -42,6 +42,8 @@ public class ControllerPlayer : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		animator.SetFloat("sped", Mathf.Abs(phat.velocity.magnitude));
+
 		if (isPlayer == true) {
 			Movevment ();
 			if (Input.GetButtonDown ("Fire1")) {
@@ -54,7 +56,12 @@ public class ControllerPlayer : MonoBehaviour {
 		}
 	}
 	public void attack () {
+
+		animator.SetTrigger ("hasHit");
+
 		hitbox.ActivateHitbox ();
+
+
 		// Cant spam rolls after a push. Bugs?
 		canRoll = false;
 		StartCoroutine (coolDownForRoll ());
@@ -95,29 +102,27 @@ public class ControllerPlayer : MonoBehaviour {
 	}
 	void GetDirection (){ 
 		if (Input.GetAxis ("Horizontal") > buffer) {
+			theDirection = CharacterDirection.right;
 			hitboxPivot.localEulerAngles = rotations [2];
-			animator.SetFloat ("direction", (float)theDirection);
-
 			} 
 		if (Input.GetAxis ("Horizontal") < -buffer) {
 			
 			theDirection = CharacterDirection.left;
 			hitboxPivot.localEulerAngles = rotations [3];
-			animator.SetFloat ("direction", (float)theDirection);
+		
 		} 
 		if (Input.GetAxis ("Vertical") < -buffer) {
 			
 			theDirection = CharacterDirection.down;
 			hitboxPivot.localEulerAngles = rotations [1];
-			animator.SetFloat ("direction", (float)theDirection);
 		}  if (Input.GetAxis ("Vertical") > buffer) 
 	
 		{
 			theDirection = CharacterDirection.up;
 			hitboxPivot.localEulerAngles = rotations [0];
-			animator.SetFloat ("direction", (float)theDirection);
+		
 		}
-
+		animator.SetFloat ("direction", (float)theDirection);
 	} 
 
 
