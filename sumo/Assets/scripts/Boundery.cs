@@ -15,7 +15,7 @@ public class Boundery : MonoBehaviour {
 
 		winner.resetText ();
 
-		containText.text = winner.winName;	
+		//containText.text = winner.winName;	
 	}
 	
 	// Update is called once per frame
@@ -29,12 +29,13 @@ public class Boundery : MonoBehaviour {
 
 			other.gameObject.GetComponent<ControllerPlayer> ().OutOfBounds ();
 			if (other.gameObject.GetComponent<SumoAI>() != null) {
+				Debug.Log (other.name + "got knocked out");
 				other.gameObject.GetComponent<SumoAI> ().enabled = false;
 
 			}
 			if (winner.CheckPlayerCount ()) {
 				timer.isTimerRunning = false;
-				containText.text = winner.winName;
+
 			
 			
 			}
@@ -44,10 +45,10 @@ public class Boundery : MonoBehaviour {
 
 
 
-		if (SceneMan.playersActive == -1) { SceneMan.Ranch ();
+		/*if (SceneMan.playersActive == -1) { SceneMan.Ranch ();
 
-			StartCoroutine (timeBuffer());
-		};
+			//StartCoroutine (timeBuffer());
+		};*/
     }
 
 

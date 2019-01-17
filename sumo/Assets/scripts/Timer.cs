@@ -47,7 +47,7 @@ public class Timer : MonoBehaviour {
         startTime = Time.time;
 
         StartCoroutine("DisplayClock"); 
-		winner.resetText ();
+		//winner.resetText ();
 	}
 	
 	// Update is called once per frame
@@ -67,6 +67,8 @@ public class Timer : MonoBehaviour {
 			if (clock < 0f) {
 				isTimerRunning = false;
 				RoundOver ();
+				Debug.Log ("game over");
+
 			}
         }
     }

@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 
 public class SumoAI : MonoBehaviour {
-	[HeaderAttribute("Testing Only")]
-	[SerializeField]Image indicator;
+	
+
 	[SerializeField] GameObject opponent;
 	[SerializeField] GameObject ring;
 	Vector3 offset = new Vector3 (0, .5f, 0);
@@ -31,8 +31,8 @@ public class SumoAI : MonoBehaviour {
 		Vector3 directionToGo = new Vector3 (0, 0, 0); 
 		if (movingOutOfTheWay) {
 			 
-			Debug.Log ("should be red");
-			indicator.color = Color.red;
+
+
 			return fleeDirection;
 
 		} else {
@@ -41,19 +41,19 @@ public class SumoAI : MonoBehaviour {
 				ClosestPlayer ();
 				Debug.Log ("try and push the opponent out");
 				directionToGo = opponent.transform.position - transform.position;
-				indicator.color = Color.cyan;
+
 			} else {
 				//try to go to the center
 				Debug.Log ("try to go to the center");
 				directionToGo = (ring.transform.position + offset) - transform.position;
-				indicator.color = Color.yellow;
+
 				if (underThreat == true) {
 					//try and get out of the threat zone
 					Debug.Log ("try and get out of the threat zone");
 					fleeDirection = pathToFlee ();
 					StartCoroutine (WhereImRunning ());
 					movingOutOfTheWay = true;
-					indicator.color = Color.black;
+
 					return fleeDirection;
 				}
 
