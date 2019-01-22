@@ -18,6 +18,7 @@ public class MenuHelper : MonoBehaviour {
 		Application.Quit();
 	}
 
-
-
+	public void ResetMenu(){
+		SceneMan.MainMenu ();
+	}
 }

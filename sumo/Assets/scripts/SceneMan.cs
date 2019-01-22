@@ -26,14 +26,21 @@ public static class SceneMan {
 	
 
 	//}
+	public static void MainMenu()
+	{
+		SceneManager.LoadScene (0);
+	}
 	public static void Win()
 	{
 		winner.playersInTheRing.Clear ();
 		SceneManager.LoadScene (3);
+
+
 	}
 	public static void Lose()
 	{
 		SceneManager.LoadScene (2);
+	
 	}
 	public static void Draw()
 	{
@@ -52,4 +59,5 @@ public static class SceneMan {
 	
 		
 	}
+
 }
