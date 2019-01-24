@@ -29,7 +29,7 @@ public class Boundery : MonoBehaviour {
 
 			other.gameObject.GetComponent<ControllerPlayer> ().OutOfBounds ();
 			if (other.gameObject.GetComponent<SumoAI>() != null) {
-				Debug.Log (other.name + "got knocked out");
+				//Debug.Log (other.name + "got knocked out");
 				other.gameObject.GetComponent<SumoAI> ().enabled = false;
 
 			}
