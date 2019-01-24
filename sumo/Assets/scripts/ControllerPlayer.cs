@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Security.Cryptography;
+using UnityEngine.UI;
 
 
 [RequireComponent(typeof(Rigidbody)) ]
@@ -74,7 +75,9 @@ public class ControllerPlayer : MonoBehaviour {
 		this.enabled = false;
 		if (GetComponent<explosion> () != null) {
 			GetComponent<explosion> ().ExplosionTime ();
-		}
+			StartCoroutine (dissapear ());
+			}
+
 	}
 
 	void Movevment()
@@ -173,5 +176,9 @@ public class ControllerPlayer : MonoBehaviour {
 
 	}
 
-
+	IEnumerator dissapear (){
+		yield return new WaitForSeconds (.5f);
+		GetComponent<SpriteRenderer> ().enabled = false;
+		GetComponentInChildren <Canvas> ().enabled = false;
+	}
 }
