@@ -11,7 +11,7 @@ public static class SceneMan {
 	{
 		playersActive = 4;
 		SceneManager.LoadScene (1);
-		Debug.Log (playersActive);
+		//Debug.Log (playersActive);
 	} 
 	// Ranch means restart
 
@@ -39,11 +39,13 @@ public static class SceneMan {
 	}
 	public static void Lose()
 	{
+		winner.playersInTheRing.Clear ();
 		SceneManager.LoadScene (2);
 	
 	}
 	public static void Draw()
 	{
+		winner.playersInTheRing.Clear ();
 		SceneManager.LoadScene (4);
 	}
 	public static void PlayerOut ()

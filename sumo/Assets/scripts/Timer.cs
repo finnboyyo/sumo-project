@@ -67,7 +67,7 @@ public class Timer : MonoBehaviour {
 			if (clock < 0f) {
 				isTimerRunning = false;
 				RoundOver ();
-				Debug.Log ("game over");
+				//Debug.Log ("game over");
 
 			}
         }

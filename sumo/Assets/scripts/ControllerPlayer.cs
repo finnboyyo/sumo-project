@@ -79,7 +79,7 @@ public class ControllerPlayer : MonoBehaviour {
 		GetDirection ();
 	
 		phat.velocity += Input.GetAxis("Vertical") * speed * Vector3.forward;
-		animator.SetFloat ("movement", phat.velocity.magnitude);
+		animator.SetFloat ("sped", phat.velocity.magnitude);
 		//Debug.Log (phat.velocity);
 		//Debug.Log (phat.velocity.magnitude);
 

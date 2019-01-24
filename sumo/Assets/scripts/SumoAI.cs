@@ -12,7 +12,7 @@ public class SumoAI : MonoBehaviour {
 	[SerializeField] GameObject ring;
 	Vector3 offset = new Vector3 (0, .5f, 0);
 	ControllerPlayer controllerPlayer;
-	float closeEnoughToHit = 1f;
+	float closeEnoughToHit = 1.5f;
 	float attackDelay = 0.2f;
 	bool readyToAttack = true;
 	float ringRadius;
@@ -39,17 +39,17 @@ public class SumoAI : MonoBehaviour {
 			if (opponentsDistanceToCenter > distanceToCenter) {
 				//try and push the opponent out
 				ClosestPlayer ();
-				Debug.Log ("try and push the opponent out");
+				//Debug.Log ("try and push the opponent out");
 				directionToGo = opponent.transform.position - transform.position;
 
 			} else {
 				//try to go to the center
-				Debug.Log ("try to go to the center");
+				//Debug.Log ("try to go to the center");
 				directionToGo = (ring.transform.position + offset) - transform.position;
 
 				if (underThreat == true) {
 					//try and get out of the threat zone
-					Debug.Log ("try and get out of the threat zone");
+					//Debug.Log ("try and get out of the threat zone");
 					fleeDirection = pathToFlee ();
 					StartCoroutine (WhereImRunning ());
 					movingOutOfTheWay = true;
@@ -60,7 +60,7 @@ public class SumoAI : MonoBehaviour {
 			}
 
 
-			return directionToGo.normalized;
+			return directionToGo;
 		}
 	}
 	Vector3 pathToFlee (){
@@ -85,6 +85,8 @@ public class SumoAI : MonoBehaviour {
 				if ((opp.transform.position - transform.position) != Vector3.zero) {
 					//directionToNearestPlayer = (opp.transform.position - transform.position);
 					opponent = opp.gameObject;
+
+
 				}
 			}
 
@@ -108,12 +110,16 @@ public class SumoAI : MonoBehaviour {
 	}
 	void ShouldWeAttack () {
 		if (readyToAttack == true){
-			if (Where ().magnitude >= closeEnoughToHit) {
+			if (Where ().magnitude <= closeEnoughToHit) {
 				controllerPlayer.attack ();
 				readyToAttack = false;
 				StartCoroutine (AttackCooldown ());
+
 			}
-		}
+
+			Debug.Log("Magnit" + Where ().magnitude);
+		} 
+
 	}
 	IEnumerator AttackCooldown () {
 		yield return new WaitForSeconds (attackDelay + Random.Range (0f,0.2f));
@@ -122,9 +128,9 @@ public class SumoAI : MonoBehaviour {
 	IEnumerator WhereImRunning () {
 		
 
-		Debug.Log (fleeDirection);
+		//Debug.Log (fleeDirection);
 		yield return new WaitForSeconds (fleeDuration);
 		movingOutOfTheWay = false;
-		Debug.Log ("done fleeing");
+		//Debug.Log ("done fleeing");
 	}
 }
