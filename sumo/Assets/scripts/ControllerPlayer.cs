@@ -72,14 +72,19 @@ public class ControllerPlayer : MonoBehaviour {
 	public void OutOfBounds () {
 		winner.playersInTheRing.Remove (this);
 		this.enabled = false;
+		if (GetComponent<explosion> () != null) {
+			GetComponent<explosion> ().ExplosionTime ();
+		}
 	}
-     void Movevment()
+    
+	void Movevment()
     {
         phat.velocity = Input.GetAxis("Horizontal") * speed * Vector3.right;
 		GetDirection ();
 	
 		phat.velocity += Input.GetAxis("Vertical") * speed * Vector3.forward;
 		animator.SetFloat ("sped", phat.velocity.magnitude);
+	
 		//Debug.Log (phat.velocity);
 		//Debug.Log (phat.velocity.magnitude);
 
@@ -101,7 +106,7 @@ public class ControllerPlayer : MonoBehaviour {
 		if (currentHealth > 1) {
 			currentHealth--;
 		}
-		SoundManagerScript.PlaySound ("beenHit");
+		SoundManagerScript.PlaySound ("beenhit");
 	}
 	void GetDirection (){ 
 		if (Input.GetAxis ("Horizontal") > buffer) {
@@ -113,7 +118,7 @@ public class ControllerPlayer : MonoBehaviour {
 			hitboxPivot.localEulerAngles = rotations [3];
 		
 		} 
-	e	if (Input.GetAxis ("Vertical") < -buffer) {
+		if (Input.GetAxis ("Vertical") < -buffer) {
 			
 			theDirection = CharacterDirection.down;
 			hitboxPivot.localEulerAngles = rotations [1];

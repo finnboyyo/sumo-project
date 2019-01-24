@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class explosion: MonoBehaviour {
-	float timeToExplode = 0.5f;
+	float timeToExplode = 0.01f;
 	[SerializeField] ParticleSystem boom;
 	// Use this for initialization
 	void Start () {
