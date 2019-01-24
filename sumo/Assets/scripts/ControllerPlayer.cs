@@ -109,12 +109,11 @@ public class ControllerPlayer : MonoBehaviour {
 			hitboxPivot.localEulerAngles = rotations [2];
 			} 
 		if (Input.GetAxis ("Horizontal") < -buffer) {
-			
 			theDirection = CharacterDirection.left;
 			hitboxPivot.localEulerAngles = rotations [3];
 		
 		} 
-		if (Input.GetAxis ("Vertical") < -buffer) {
+	e	if (Input.GetAxis ("Vertical") < -buffer) {
 			
 			theDirection = CharacterDirection.down;
 			hitboxPivot.localEulerAngles = rotations [1];
@@ -135,7 +134,7 @@ public class ControllerPlayer : MonoBehaviour {
 			if (Mathf.Abs(sumoAI.DirectionToClosestPlayer ().normalized.x) > (sumoAI.DirectionToClosestPlayer ().normalized.x)) {
 				theDirection = CharacterDirection.right;
 				hitboxPivot.localEulerAngles = rotations [2];
-				transform.localScale = new Vector3 (1, 1, 1);
+				//transform.localScale = new Vector3 (1, 1, 1);
 				animator.SetFloat ("direction", (float)theDirection);
 
 			} 
