@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class explosion: MonoBehaviour {
 	float timeToExplode = 0.5f;
+	[SerializeField] ParticleSystem boom;
 	// Use this for initialization
 	void Start () {
 		
@@ -17,6 +18,7 @@ public class explosion: MonoBehaviour {
 	IEnumerator WaitToExplode (){
 		yield return new WaitForSeconds (timeToExplode);
 		SoundManagerScript.PlaySound ("explosion");
+		boom.Play ();
 	}
 
 	}
