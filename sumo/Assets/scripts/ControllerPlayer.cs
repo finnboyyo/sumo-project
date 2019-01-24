@@ -48,6 +48,7 @@ public class ControllerPlayer : MonoBehaviour {
 			Movevment ();
 			if (Input.GetButtonDown ("Fire1")) {
 				attack ();
+				SoundManagerScript.PlaySound ("hit");
 
 			}
 
@@ -61,6 +62,7 @@ public class ControllerPlayer : MonoBehaviour {
 
 		hitbox.ActivateHitbox ();
 
+		SoundManagerScript.PlaySound ("hit");
 
 		// Cant spam rolls after a push. Bugs?
 		canRoll = false;
@@ -99,6 +101,7 @@ public class ControllerPlayer : MonoBehaviour {
 		if (currentHealth > 1) {
 			currentHealth--;
 		}
+		SoundManagerScript.PlaySound ("beenHit");
 	}
 	void GetDirection (){ 
 		if (Input.GetAxis ("Horizontal") > buffer) {

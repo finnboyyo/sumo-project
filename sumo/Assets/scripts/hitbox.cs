@@ -24,6 +24,7 @@ public class Hitbox : MonoBehaviour {
 
 	void Reaction (Collider other) {
 		other.gameObject.GetComponent<ControllerPlayer> ().GotHit (transform.forward);
+		SoundManagerScript.PlaySound ("beenHit");
 	}
 	void OnEnable (){
 		beenHit = false;
