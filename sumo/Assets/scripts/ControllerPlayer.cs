@@ -113,7 +113,7 @@ public class ControllerPlayer : MonoBehaviour {
 			hitboxPivot.localEulerAngles = rotations [3];
 		
 		} 
-	e	if (Input.GetAxis ("Vertical") < -buffer) {
+	if (Input.GetAxis ("Vertical") < -buffer) {
 			
 			theDirection = CharacterDirection.down;
 			hitboxPivot.localEulerAngles = rotations [1];
