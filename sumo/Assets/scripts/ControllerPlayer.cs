@@ -29,7 +29,7 @@ public class ControllerPlayer : MonoBehaviour {
 	}
 
 	void OnEnable (){
-		
+
 		animator = GetComponent<Animator> ();
 		hitbox = GetComponentInChildren<Hitbox> ();
 		phat = GetComponent<Rigidbody>();
@@ -37,9 +37,9 @@ public class ControllerPlayer : MonoBehaviour {
 		// tell winner script that were inthe ring
 		winner.playersInTheRing.Add (this);
 		currentHealth = fullHealth;
-	
+
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		animator.SetFloat("sped", Mathf.Abs(phat.velocity.magnitude));
@@ -72,23 +72,28 @@ public class ControllerPlayer : MonoBehaviour {
 	public void OutOfBounds () {
 		winner.playersInTheRing.Remove (this);
 		this.enabled = false;
+		if (GetComponent<explosion> () != null) {
+			GetComponent<explosion> ().ExplosionTime ();
+		}
 	}
-     void Movevment()
+
+	void Movevment()
     {
         phat.velocity = Input.GetAxis("Horizontal") * speed * Vector3.right;
 		GetDirection ();
-	
+
 		phat.velocity += Input.GetAxis("Vertical") * speed * Vector3.forward;
 		animator.SetFloat ("sped", phat.velocity.magnitude);
+
 		//Debug.Log (phat.velocity);
 		//Debug.Log (phat.velocity.magnitude);
 
-	} 
+	}
 	void sumoAIMovevment()
 	{
 		phat.velocity = sumoAI.Where ().normalized * speed;
 		GetAIDirection ();
-	} 
+	}
 
 	void RollStart (){
 
@@ -101,34 +106,34 @@ public class ControllerPlayer : MonoBehaviour {
 		if (currentHealth > 1) {
 			currentHealth--;
 		}
-		SoundManagerScript.PlaySound ("beenHit");
+		SoundManagerScript.PlaySound ("beenhit");
 	}
-	void GetDirection (){ 
+	void GetDirection (){
 		if (Input.GetAxis ("Horizontal") > buffer) {
 			theDirection = CharacterDirection.right;
 			hitboxPivot.localEulerAngles = rotations [2];
-			} 
+			}
 		if (Input.GetAxis ("Horizontal") < -buffer) {
 			theDirection = CharacterDirection.left;
 			hitboxPivot.localEulerAngles = rotations [3];
-		
-		} 
-	if (Input.GetAxis ("Vertical") < -buffer) {
-			
+
+		}
+		if (Input.GetAxis ("Vertical") < -buffer) {
+
 			theDirection = CharacterDirection.down;
 			hitboxPivot.localEulerAngles = rotations [1];
-		}  if (Input.GetAxis ("Vertical") > buffer) 
-	
+		}  if (Input.GetAxis ("Vertical") > buffer)
+
 		{
 			theDirection = CharacterDirection.up;
 			hitboxPivot.localEulerAngles = rotations [0];
-		
+
 		}
 		animator.SetFloat ("direction", (float)theDirection);
-	} 
+	}
 
 
-	void GetAIDirection (){ 
+	void GetAIDirection (){
 
 		if ((Mathf.Abs(sumoAI.DirectionToClosestPlayer ().normalized.x) > (Mathf.Abs (sumoAI.DirectionToClosestPlayer().normalized.z)))) {
 			if (Mathf.Abs(sumoAI.DirectionToClosestPlayer ().normalized.x) > (sumoAI.DirectionToClosestPlayer ().normalized.x)) {
@@ -137,8 +142,8 @@ public class ControllerPlayer : MonoBehaviour {
 				//transform.localScale = new Vector3 (1, 1, 1);
 				animator.SetFloat ("direction", (float)theDirection);
 
-			} 
-		
+			}
+
 			else  {
 				theDirection = CharacterDirection.left;
 				hitboxPivot.localEulerAngles = rotations [3];
@@ -151,7 +156,7 @@ public class ControllerPlayer : MonoBehaviour {
 				theDirection = CharacterDirection.down;
 				hitboxPivot.localEulerAngles = rotations [0];
 				animator.SetFloat ("direction", (float)theDirection);
-			}  
+			}
 			else  {
 
 				theDirection = CharacterDirection.up;
@@ -160,7 +165,7 @@ public class ControllerPlayer : MonoBehaviour {
 			}
 		}
 
-	} 
+	}
 
 	IEnumerator coolDownForRoll(float pushTime = 1f){
 		yield return new WaitForSeconds (pushTime + .2f);
