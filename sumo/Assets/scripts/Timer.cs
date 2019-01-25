@@ -14,36 +14,30 @@ public class Timer : MonoBehaviour {
 	public TextMeshProUGUI textWin;
     // Use this for initialization
 
-	public static bool GameIsPaused = false;
-
-	public GameObject pauseMenuUI;
-
-    void Stop() {
+	void Stop() {
 
 
-        if (Input.GetKeyDown("p"))
-        {
+		if (Input.GetKeyDown("p"))
+		{
 
 
 
-            isPaused = !isPaused;
-            if (isPaused == true)
-            {
-				pauseMenuUI.SetActive (true);
-                Time.timeScale = 0.0f;
-				GameIsPaused = true;
+			isPaused = !isPaused;
+			if (isPaused == true)
+			{
 
-            }
-            else
-            {
-				pauseMenuUI.SetActive (false);
-                Time.timeScale = 1f;
-				GameIsPaused = false;
-            }
-        }
-    }
+				Time.timeScale = 0.0f;
 
-		
+
+			}
+			else
+			{
+
+				Time.timeScale = 1f;
+
+			}
+		}
+	}
 
 
 
