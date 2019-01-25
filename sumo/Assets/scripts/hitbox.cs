@@ -31,7 +31,7 @@ public class Hitbox : MonoBehaviour {
 	}
 	public void ActivateHitbox () {
 		StartCoroutine (HitboxActivation ());
-		rend.enabled = true;
+		//rend.enabled = true;
 
 	}
 	

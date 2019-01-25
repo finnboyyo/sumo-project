@@ -8,11 +8,16 @@ public class Timer : MonoBehaviour {
 	[SerializeField] float matchLength = 60f;
     float clock;
     float startTime;
-    public Text grandfatherClock;
+    public TextMeshProUGUI grandfatherClock;
     public bool isTimerRunning = true;
     bool isPaused = false;
 	public TextMeshProUGUI textWin;
     // Use this for initialization
+
+	public static bool GameIsPaused = false;
+
+	public GameObject pauseMenuUI;
+
     void Stop() {
 
 
@@ -24,28 +29,36 @@ public class Timer : MonoBehaviour {
             isPaused = !isPaused;
             if (isPaused == true)
             {
-
+				pauseMenuUI.SetActive (true);
                 Time.timeScale = 0.0f;
-
+				GameIsPaused = true;
 
             }
             else
             {
+				pauseMenuUI.SetActive (false);
                 Time.timeScale = 1f;
-
+				GameIsPaused = false;
             }
         }
     }
 
-	void RoundOver () {winner.MatchOver ();
+		
+
+
+
+    void RoundOver () 
+{
+
+	winner.MatchOver ();
+	
 	}
 	void InitializePlayers (){
 	}
 	void Start () {
-
+	
 		clock = matchLength;
         startTime = Time.time;
-
         StartCoroutine("DisplayClock"); 
 		//winner.resetText ();
 	}
@@ -72,7 +85,7 @@ public class Timer : MonoBehaviour {
 			}
         }
     }
-
-
 }
+
+
 

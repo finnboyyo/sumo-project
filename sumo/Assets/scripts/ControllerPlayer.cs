@@ -177,8 +177,11 @@ public class ControllerPlayer : MonoBehaviour {
 	}
 
 	IEnumerator dissapear (){
-		yield return new WaitForSeconds (.5f);
-		GetComponent<SpriteRenderer> ().enabled = false;
-		GetComponentInChildren <Canvas> ().enabled = false;
+		yield return new WaitForSeconds (.05f);
+		//GetComponent<SpriteRenderer> ().enabled = false;
+		SpriteRenderer[] symbol = GetComponentsInChildren <SpriteRenderer> ();
+		foreach (SpriteRenderer name in symbol) {
+			name.enabled = false;
+		}
 	}
 }
