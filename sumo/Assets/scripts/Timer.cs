@@ -12,9 +12,12 @@ public class Timer : MonoBehaviour {
     public bool isTimerRunning = true;
     bool isPaused = false;
 	public TextMeshProUGUI textWin;
+
     // Use this for initialization
 
-	void Stop() {
+
+
+	public void Stop() {
 
 
 		if (Input.GetKeyDown("p"))
@@ -24,15 +27,18 @@ public class Timer : MonoBehaviour {
 
 			isPaused = !isPaused;
 			if (isPaused == true)
+				
 			{
+				 
 
 				Time.timeScale = 0.0f;
 
 
 			}
+
 			else
 			{
-
+				
 				Time.timeScale = 1f;
 
 			}
@@ -50,7 +56,7 @@ public class Timer : MonoBehaviour {
 	void InitializePlayers (){
 	}
 	void Start () {
-	
+
 		clock = matchLength;
         startTime = Time.time;
         StartCoroutine("DisplayClock"); 
